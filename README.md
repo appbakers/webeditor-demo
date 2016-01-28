@@ -1,6 +1,4 @@
-# just simple webeditor compare demo
-
-
+# just simple webeditor demo
 
 # clj-webdriver-tutorial
 

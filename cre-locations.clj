@@ -3,7 +3,7 @@
 (def db-spec
   '{:classname "org.h2.Driver"
    :subprotocol "h2:file"
-   :subname "db/clj-webdriver-tutorial"})
+   :subname "db/webeditor-demo"})
 
 (defn clob-to-string [row]
   (assoc row :text (with-open [rdr (java.io.BufferedReader. (.getCharacterStream (:text row)))]
