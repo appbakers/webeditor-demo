@@ -25,9 +25,10 @@
 
   (GET "/chg-board/:board-id"
        [board-id]
-       (views/chg-board-page))
-  (POST "/chg-board"
+       (views/chg-board-page board-id))
+  (POST "/chg-board/:board-id"
         {params :params}
+        (println (str params "x"))
         (views/chg-board-results-page params))
 
   (route/resources "/")

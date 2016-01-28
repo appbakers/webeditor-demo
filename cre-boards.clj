@@ -30,10 +30,12 @@
                       {:title "this is test" :content "this is clob data"}))
 (sql/with-connection
   db-spec
-  (sql/update-or-insert-values :boards ["id = ?" 1]
-                               {:title "1 changed" :content "changed"}))
+  (sql/update-or-insert-values :boards ["id = ?" 2]
+                               {:title "2 changed" :content "changed"}))
 
 (sql/with-connection db-spec
                   (sql/with-query-results res
                 ["select id, title, content from boards"]
                 (doall res)))
+(sql/with-connection db-spec
+                     (sql/delete-rows :boards ["id = ?" 1]))

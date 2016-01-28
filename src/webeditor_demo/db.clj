@@ -30,13 +30,21 @@
                 (doall res)))]
     results))
 
+(defn get-all-boards
+  []
+  (let [results (sql/with-connection db-spec
+                  (sql/with-query-results res
+                ["select id, title, content from boards"]
+                (doall res)))]
+    results))
+
 (defn get-board
   [board-id]
   (let [results (sql/with-connection db-spec
                 (sql/with-query-results res
                                         ["select id, title, content from boards where id = ?" board-id]
                                         (doall res)))]
-    (assert (= (count results) 1))
+;;    (assert (= (count results) 1))
     (first results)))
 
 (defn chg-board
@@ -46,9 +54,18 @@
                                        :boards
                                        ["id = ?" board-id]
                                        m))]
-   (assert (= (count results) 1))
+;;  (println results)
+;;   (assert (= (count results) 1))
     (get-board (first results))
    ))
+;
+;; (get-board 3)
+;; (get-board 2)
+;; (get-board 1)
+;; (get-all-boards)
+
+;; (chg-board 2 {:title "xx" :content "xxfew"})
+;; (chg-board 1 {:title "1" :content "xxfew"})
 
 
 
