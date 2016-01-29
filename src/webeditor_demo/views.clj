@@ -46,11 +46,18 @@
   [:head
    [:title (str "Jquery Text Editor Webeditor: " title)]
    (h/include-css "/js/jqte/jquery-te-1.4.0.css")
- (h/include-js  "http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js")
+;; (h/include-js  "http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js")
+   (h/include-js "/js/jqte/jquery-1.9.0.js")
+
+   (h/include-css "/js/jquery-ui/jquery-ui.css")
+   (h/include-js "/js/jquery-ui/jquery-ui.js")
+
+
    (h/include-js "/js/jqte/jquery-te-1.4.0.js")
    (h/include-css "/js/jqte/demo/demo.css")
    (h/include-js "/js/paste-image/jquery.paste_image_reader.js")
 
+ (h/include-css "/js/jqte/webeditor-init.css")
  (h/include-js "/js/jqte/webeditor-init.js")
    (h/include-css "/css/styles.css")])
 
@@ -122,21 +129,30 @@
        (for [loc all-locs]
          [:tr [:td (:id loc)] [:td (:x loc)] [:td (:y loc)]])])))
 
+(defn jqte-form
+  [board-id result]
+  (h/html5
+    [:fieldset{:id "images"}
+     [:input {:type "file" :multiple "multiple" :accept "images/*"}]]
+    [:form {:action (str "/chg-board/" board-id) :method "POST"}
+     [:p "board-id: " [:input {:type "text" :readonly "readonly" :name "board-id" :value (:id result)}]]
+     [:p "title: " [:input {:type "text" :name "title" :value (:title result)}]]
+     [:p [:input {:type "button" :class "jqte_status" :value "toggle editor"}]
+      [:input {:id "jqte_submit" :type "submit" :value "submit content"}]]
+     [:textarea {:class "editor" :name "content"} (:content result)]]
+     [:p "content: " [:div (:content result)]]
+   ))
+
+
 (defn chg-board-page
   [board-id]
   (let [result (db/get-board board-id)]
-  (h/html5
-    (gen-page-head-jqtewebeditor "webeditor changing")
-    header-links
-    [:h1 "webeditor"]
-    [:form {:action (str "/chg-board/" board-id) :method "POST"}
-     [:p "board-id: " [:input {:type "text"  :name "board-id" :value (:id result)}]]
-     [:p "title: " [:input {:type "text" :name "title" :value (:title result)}]]
-     [:p "content: " [:input {:type "text" :value (:content result)}]]
-     [:textarea {:class "editor" :name "content"} (:content result)]
-;;     [:textarea {:class "editor"} "default value. Please change"]
-;;     [:textarea {:class "editor"} "default value. Please change"]
-     [:p [:input {:type "submit" :value "submit content"}]]])))
+    (h/html5
+      (gen-page-head-jqtewebeditor "webeditor changing")
+      header-links
+      [:h1 "webeditor"]
+      (jqte-form board-id result)
+      )))
 
 (defn chg-board-results-page
   [{:keys [board-id title content]}]
@@ -145,8 +161,6 @@
       (gen-page-head-jqtewebeditor "webeditor changed")
       header-links
       [:h1 "change applied"]
-    [:form {:action (str "/chg-board/" board-id) :method "POST"}
-     [:p "board-id: " [:input {:type "text"  :name "board-id" :value (:id result)}]]
-     [:p "title: " [:input {:type "text" :name "title" :value (:title result)}]]
-     [:textarea {:class "editor" :name "content"} (:content result)]
-     [:p [:input {:type "submit" :value "submit content"}]]])))
+      (jqte-form board-id result)
+
+      )))

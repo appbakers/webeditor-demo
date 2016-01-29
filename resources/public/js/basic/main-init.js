@@ -22,6 +22,8 @@
       } else {
         $('#voiceBtn').hide();
       }
+
+
 	};
 	function showErrorAlert (reason, detail) {
 		var msg='';

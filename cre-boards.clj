@@ -21,7 +21,7 @@
   (sql/create-table :boards
                     [:id "bigint primary key auto_increment"]
                     [:title "varchar"]
-                    [:content "varchar(4000)"]))
+                    [:content "varchar"]))
 
 
 (sql/with-connection

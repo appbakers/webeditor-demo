@@ -55,9 +55,8 @@
                                        ["id = ?" board-id]
                                        m))]
 ;;  (println results)
-;;   (assert (= (count results) 1))
-    (get-board (first results))
-   ))
+   (assert (= (count results) 1))
+   (first results)))
 ;
 ;; (get-board 3)
 ;; (get-board 2)
